@@ -1,0 +1,199 @@
+{
+  "entities": {
+    "School": {
+      "title": "School or Company",
+      "description": "Organização ou empresa cadastrada no sistema PsicoSafe para monitoramento ocupacional",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "name": { "type": "string", "maxLength": 256 },
+        "mecCode": { "type": "string", "maxLength": 64 },
+        "cnpj": { "type": "string", "maxLength": 32 },
+        "city": { "type": "string", "maxLength": 128 },
+        "state": { "type": "string", "maxLength": 8 },
+        "totalEmployees": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "formOperacionalId": { "type": "string", "maxLength": 128 },
+        "formAdministrativoId": { "type": "string", "maxLength": 128 },
+        "formGestaoId": { "type": "string", "maxLength": 128 }
+      },
+      "required": ["id", "name"]
+    },
+    "CompanyDiagnosis": {
+      "title": "Company Diagnosis",
+      "description": "Diagnóstico ocupacional consolidado com taxas de absenteísmo, turnover e atestados médicos",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "schoolId": { "type": "string", "maxLength": 128 },
+        "schoolName": { "type": "string", "maxLength": 256 },
+        "period": { "type": "string", "maxLength": 64 },
+        "absenteeismRate": { "type": "number" },
+        "turnoverRate": { "type": "number" },
+        "medicalCertificatesCount": { "type": "number" },
+        "medicalLeavesCount": { "type": "number" },
+        "hasHealthInsurance": { "type": "boolean" },
+        "healthInsuranceType": { "type": "string", "maxLength": 64 },
+        "hasMentalHealthProgram": { "type": "boolean" },
+        "observations": { "type": "string", "maxLength": 2048 },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "schoolId"]
+    },
+    "Form": {
+      "title": "Survey Form",
+      "description": "Instrumento de avaliação psicossocial padronizado (ex: COPSOQ II-Br, HSE-IT)",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "title": { "type": "string", "maxLength": 256 },
+        "targetAudience": { "type": "string", "maxLength": 128 },
+        "description": { "type": "string", "maxLength": 2048 },
+        "sector": { "type": "string", "maxLength": 128 }
+      },
+      "required": ["id", "title"]
+    },
+    "Response": {
+      "title": "Survey Response",
+      "description": "Resposta anônima enviada sob o protocolo LGPD com hash e métricas consolidadas",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "formId": { "type": "string", "maxLength": 128 },
+        "formTitle": { "type": "string", "maxLength": 256 },
+        "segment": { "type": "string", "maxLength": 128 },
+        "sector": { "type": "string", "maxLength": 128 },
+        "roleCategory": { "type": "string", "maxLength": 128 },
+        "tenure": { "type": "string", "maxLength": 64 },
+        "submittedAt": { "type": "string", "format": "date-time" },
+        "anonymousHash": { "type": "string", "maxLength": 128 }
+      },
+      "required": ["id", "formId", "anonymousHash"]
+    },
+    "Intervention": {
+      "title": "Intervention Action Plan",
+      "description": "Plano de ação preventivo para o Inventário de Riscos e PGR (NR-1.5)",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "schoolId": { "type": "string", "maxLength": 128 },
+        "sector": { "type": "string", "maxLength": 128 },
+        "riskLevel": { "type": "string", "maxLength": 32 },
+        "title": { "type": "string", "maxLength": 256 },
+        "description": { "type": "string", "maxLength": 2048 },
+        "priority": { "type": "string", "maxLength": 32 },
+        "deadline": { "type": "string", "maxLength": 64 },
+        "status": { "type": "string", "maxLength": 32 },
+        "responsible": { "type": "string", "maxLength": 128 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "title", "sector"]
+    },
+    "AuditLog": {
+      "title": "Audit Log",
+      "description": "Registro de auditoria de conformidade, acesso e integridade",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "action": { "type": "string", "maxLength": 128 },
+        "userEmail": { "type": "string", "maxLength": 256 },
+        "userRole": { "type": "string", "maxLength": 64 },
+        "details": { "type": "string", "maxLength": 2048 }
+      },
+      "required": ["id", "timestamp", "action"]
+    },
+    "AppointmentSlot": {
+      "title": "Appointment Slot",
+      "description": "Horário disponível ou bloqueado para acolhimento psicológico",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "date": { "type": "string", "maxLength": 32 },
+        "time": { "type": "string", "maxLength": 16 },
+        "durationMinutes": { "type": "number" },
+        "specialistName": { "type": "string", "maxLength": 128 },
+        "status": { "type": "string", "maxLength": 32 },
+        "bookingUrl": { "type": "string", "maxLength": 512 }
+      },
+      "required": ["id", "date", "time"]
+    },
+    "ScheduledAppointment": {
+      "title": "Scheduled Appointment",
+      "description": "Agendamento confirmado com link Google Meet oficial",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "slotId": { "type": "string", "maxLength": 128 },
+        "date": { "type": "string", "maxLength": 32 },
+        "time": { "type": "string", "maxLength": 16 },
+        "employeeName": { "type": "string", "maxLength": 128 },
+        "employeeEmail": { "type": "string", "maxLength": 256 },
+        "bookingUrl": { "type": "string", "maxLength": 512 },
+        "meetHostAccount": { "type": "string", "maxLength": 256 },
+        "companyId": { "type": "string", "maxLength": 128 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "slotId", "date", "time"]
+    },
+    "Psychologist": {
+      "title": "Psychologist",
+      "description": "Psicólogo credenciado com integração ao Google Calendar e Meet",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "name": { "type": "string", "maxLength": 128 },
+        "email": { "type": "string", "maxLength": 256 },
+        "crp": { "type": "string", "maxLength": 64 },
+        "specialty": { "type": "string", "maxLength": 256 },
+        "phone": { "type": "string", "maxLength": 32 },
+        "color": { "type": "string", "maxLength": 32 },
+        "status": { "type": "string", "maxLength": 32 },
+        "googleCalendarSynced": { "type": "boolean" },
+        "calendarShareUrl": { "type": "string", "maxLength": 512 },
+        "admCalendarEmail": { "type": "string", "maxLength": 256 },
+        "coHostEnabled": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "name", "email", "crp"]
+    }
+  },
+  "firestore": {
+    "/schools/{schoolId}": {
+      "schema": "School",
+      "description": "Coleção de empresas e organizações monitoradas"
+    },
+    "/psychologists/{psychologistId}": {
+      "schema": "Psychologist",
+      "description": "Cadastro de psicólogos integrados à Google Agenda e Meet"
+    },
+    "/companyDiagnoses/{diagnosisId}": {
+      "schema": "CompanyDiagnosis",
+      "description": "Diagnósticos e indicadores de absenteísmo ocupacional"
+    },
+    "/forms/{formId}": {
+      "schema": "Form",
+      "description": "Modelos de questionários psicossociais vigentes"
+    },
+    "/responses/{responseId}": {
+      "schema": "Response",
+      "description": "Respostas anonimizadas submetidas pelos colaboradores"
+    },
+    "/interventions/{interventionId}": {
+      "schema": "Intervention",
+      "description": "Planos de ação e intervenção preventiva do PGR"
+    },
+    "/auditLogs/{logId}": {
+      "schema": "AuditLog",
+      "description": "Trilhas de auditoria para conformidade NR-1 e LGPD"
+    },
+    "/appointmentSlots/{slotId}": {
+      "schema": "AppointmentSlot",
+      "description": "Horários de agendamento e bloqueio concorrente"
+    },
+    "/scheduledAppointments/{appointmentId}": {
+      "schema": "ScheduledAppointment",
+      "description": "Atendimentos confirmados com link Google Meet do proprietário"
+    }
+  }
+}

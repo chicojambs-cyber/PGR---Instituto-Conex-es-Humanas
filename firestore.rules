@@ -1,0 +1,101 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default Deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwnerOrAdmin() {
+      return (request.auth != null && request.auth.token.email == 'chicojambs@gmail.com') ||
+             (request.auth != null && exists(/databases/$(database)/documents/admins/$(request.auth.uid)));
+    }
+
+    // Coleção de Teste de Conexão
+    match /test/{testId} {
+      allow read, write: if true;
+    }
+
+    // Coleção de Empresas / Organizações
+    match /schools/{schoolId} {
+      allow read, write: if isValidId(schoolId);
+    }
+
+    // Coleção de Diagnósticos Corporativos (Absenteísmo, Atestados)
+    match /companyDiagnoses/{diagnosisId} {
+      allow read, write: if isValidId(diagnosisId);
+    }
+
+    // Modelos de Questionários (COPSOQ II-Br, HSE-IT)
+    match /forms/{formId} {
+      allow read, write: if isValidId(formId);
+    }
+
+    // Respostas dos Questionários (Anonimizadas sob a LGPD)
+    match /responses/{responseId} {
+      allow read, write: if isValidId(responseId);
+    }
+
+    // Planos de Ação e Intervenções do PGR (NR-1.5)
+    match /interventions/{interventionId} {
+      allow read, write: if isValidId(interventionId);
+    }
+
+    // Inventário de Riscos (GRO / NR-1.5)
+    match /riskInventory/{itemId} {
+      allow read, write: if isValidId(itemId);
+    }
+
+    // Trilhas de Auditoria e Conformidade
+    match /auditLogs/{logId} {
+      allow read, write: if isValidId(logId);
+    }
+    match /companyAuditLogs/{logId} {
+      allow read, write: if isValidId(logId);
+    }
+
+    // Snapshots de backup e sincronização em nuvem
+    match /cloud_sync/{syncId} {
+      allow read, write: if isValidId(syncId);
+    }
+
+    // Atendimentos e Agendamentos Psicológicos
+    match /scheduledAppointments/{appointmentId} {
+      allow read, write: if isValidId(appointmentId);
+    }
+    match /appointmentSlots/{slotId} {
+      allow read, write: if isValidId(slotId);
+    }
+    match /appointmentConfig/{configId} {
+      allow read, write: if isValidId(configId);
+    }
+
+    // Colaboradores Vinculados
+    match /employees/{employeeId} {
+      allow read, write: if isValidId(employeeId);
+    }
+
+    // Matriz de Níveis e Permissões
+    match /rolePermissions/{roleId} {
+      allow read, write: if isValidId(roleId);
+    }
+
+    // Supervisores
+    match /supervisors/{supervisorId} {
+      allow read, write: if isValidId(supervisorId);
+    }
+
+    // Cadastro de Psicólogos & Especialistas Integrados
+    match /psychologists/{psychologistId} {
+      allow read, write: if isValidId(psychologistId);
+    }
+  }
+}

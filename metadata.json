@@ -1,0 +1,6 @@
+{
+  "name": "PsicoSafe NR-1 - Gestão de Riscos Psicossociais",
+  "description": "Plataforma de mapeamento e gestão de riscos psicossociais em conformidade com a NR-1 e LGPD, com formulários anônimos criptografados, dashboards em tempo real, controle de acesso e auditoria.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
